@@ -44,7 +44,7 @@ oldtime = time.time()
 print "Dash Command 1.0 Started"
 
 # Use your own IFTTT key, not this fake one
-ifttt_key = YOUR MAKER API KEY HERE GET IT AT https://ifttt.com/maker'
+ifttt_key = 'YOUR MAKER API KEY HERE GET IT AT https://ifttt.com/maker'
 # Set these up at https://ifttt.com/maker
 ifttt_url_goodnight_1 = 'https://maker.ifttt.com/trigger/goodnight_dash_1/with/key/' + ifttt_key
 ifttt_url_arcade_on = 'https://maker.ifttt.com/trigger/arcade_on/with/key/' + ifttt_key

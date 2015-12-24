@@ -2,7 +2,7 @@
 # http://www.aaronbell.com/how-to-hack-amazons-wifi-button/
 
 # improvement from forked script:
-# Basic loggin to file
+# Basic logging to file
 
 # if you want to run this script as an ubuntu service, check out
 # http://askubuntu.com/questions/175751/how-do-i-run-a-python-script-in-the-background-and-restart-it-after-a-crash

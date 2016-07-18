@@ -12,7 +12,7 @@ import struct
 import binascii
 import time
 import json
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import time
 
 # Implement Logging
@@ -41,7 +41,7 @@ sys.stderr = LogFile('stderr')
 # End Logging
 
 oldtime = time.time()
-print "Dash Command 1.0 Started"
+print("Dash Command 1.0 Started")
 
 # Use your own IFTTT key, not this fake one
 ifttt_key = 'YOUR MAKER API KEY HERE GET IT AT https://ifttt.com/maker'
@@ -61,20 +61,20 @@ macs = {
 # Trigger a IFTTT URL. Body includes JSON with timestamp values.
 def trigger_url(url):
     data = '{ "value1" : "' + time.strftime("%Y-%m-%d") + '", "value2" : "' + time.strftime("%H:%M") + '" }'
-    req = urllib2.Request(url, data, {'Content-Type': 'application/json'})
-    f = urllib2.urlopen(req)
+    req = urllib.request.Request(url, data, {'Content-Type': 'application/json'})
+    f = urllib.request.urlopen(req)
     response = f.read()
     f.close()
     return response
 
 def do_goodnight():
-    print 'Shortcut Goodnight Triggered: ' + trigger_url(ifttt_url_goodnight_1)
+    print('Shortcut Goodnight Triggered: ' + trigger_url(ifttt_url_goodnight_1))
 
 def arcade_on():
-    print 'Firing up the Arcade: ' + trigger_url(ifttt_url_arcade_on)
+    print('Firing up the Arcade: ' + trigger_url(ifttt_url_arcade_on))
 
 def arcade_off():
-    print 'Shutting down the Arcade: ' + trigger_url(ifttt_url_arcade_off)
+    print('Shutting down the Arcade: ' + trigger_url(ifttt_url_arcade_off))
 
 rawSocket = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003))
 
@@ -98,22 +98,22 @@ while True:
               do_goodnight()
               oldtime = time.time()
            else:
-              print "Shorcut Triggered Once"
+              print("Shorcut Triggered Once")
               
         if macs[source_mac] == 'arcade_on':
            if time.time() - oldtime > 15:
               arcade_on()
               oldtime = time.time()
            else:
-              print "Shortcut Triggered Once"
+              print("Shortcut Triggered Once")
 
         if macs[source_mac] == 'arcade_off':
            if time.time() - oldtime > 15:
               arcade_off()
               oldtime = time.time()
            else:
-              print "Shortcut Triggered Once"
+              print("Shortcut Triggered Once")
               
     elif source_ip == '0.0.0.0':
-        print "Unknown dash button detected with MAC " + source_mac
+        print("Unknown dash button detected with MAC " + source_mac)
 

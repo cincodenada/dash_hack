@@ -53,18 +53,19 @@ ifttt_key = 'YOUR MAKER API KEY HERE GET IT AT https://ifttt.com/maker'
 ifttt_url_goodnight_1 = 'https://maker.ifttt.com/trigger/goodnight_dash_1/with/key/' + ifttt_key
 ifttt_url_arcade_on = 'https://maker.ifttt.com/trigger/arcade_on/with/key/' + ifttt_key
 ifttt_url_arcade_off = 'https://maker.ifttt.com/trigger/arcade_off/with/key/' + ifttt_key
+ifttt_url_pressed = 'https://maker.ifttt.com/trigger/dash_pressed/with/key/' + ifttt_key
 
 # Replace these fake MAC addresses and nicknames with your own
 macs = {
-    '465855866979' : 'dash_dixie_goodnight_1',
-    '235465768699' : 'arcade_on',
-    '346586986069' : 'arcade_off'
-
+    b'465855866979' : 'dash_dixie_goodnight_1',
+    b'235465768699' : 'arcade_on',
+    b'346586986069' : 'arcade_off',
+    b'1234deadbeef' : 'pressed',
 }
 
 # Trigger a IFTTT URL. Body includes JSON with timestamp values.
 def trigger_url(url):
-    data = '{ "value1" : "' + time.strftime("%Y-%m-%d") + '", "value2" : "' + time.strftime("%H:%M") + '" }'
+    data = b'{ "value1" : "' + time.strftime("%Y-%m-%d").encode('ascii') + b'", "value2" : "' + time.strftime("%H:%M").encode('ascii') + b'" }'
     req = urllib.request.Request(url, data, {'Content-Type': 'application/json'})
     f = urllib.request.urlopen(req)
     response = f.read()
@@ -79,6 +80,9 @@ def arcade_on():
 
 def arcade_off():
     print('Shutting down the Arcade: ' + trigger_url(ifttt_url_arcade_off))
+
+def pressed():
+    print('Pressed: {}'.format(trigger_url(ifttt_url_pressed)))
 
 rawSocket = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003))
 
@@ -115,6 +119,13 @@ while True:
         if macs[source_mac] == 'arcade_off':
            if time.time() - oldtime > 15:
               arcade_off()
+              oldtime = time.time()
+           else:
+              print("Shortcut Triggered Once")
+              
+        if macs[source_mac] == 'pressed':
+           if time.time() - oldtime > 15:
+              pressed()
               oldtime = time.time()
            else:
               print("Shortcut Triggered Once")

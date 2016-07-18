@@ -14,6 +14,7 @@ import time
 import json
 import urllib.request, urllib.error, urllib.parse
 import time
+from dash_outputs import ifttt
 
 # Implement Logging
 
@@ -47,32 +48,19 @@ amazon_prefixes = [
 oldtime = time.time() - 15
 print("Dash Command 1.0 Started")
 
-# Use your own IFTTT key, not this fake one
-ifttt_key = 'YOUR MAKER API KEY HERE GET IT AT https://ifttt.com/maker'
-# Set these up at https://ifttt.com/maker
-ifttt_url_pressed = 'https://maker.ifttt.com/trigger/dash_pressed/with/key/' + ifttt_key
-
 # Replace these fake MAC addresses and nicknames with your own
 macs = {
-    b'465855866979' : 'dash_dixie_goodnight_1',
-    b'235465768699' : 'arcade_on',
-    b'346586986069' : 'arcade_off',
-    b'1234deadbeef' : 'pressed',
+    b'465855866979' : ('IFTTT', 'dash_dixie_goodnight_1'),
+    b'235465768699' : ('IFTTT', 'arcade_on'),
+    b'346586986069' : ('IFTTT', 'arcade_off'),
+    b'1234deadbeef' : ('IFTTT', 'dash_pressed'),
 }
 
-# Trigger a IFTTT URL. Body includes JSON with timestamp values.
-def trigger_url(url):
-    data = b'{ "value1" : "' + time.strftime("%Y-%m-%d").encode('ascii') + b'", "value2" : "' + time.strftime("%H:%M").encode('ascii') + b'" }'
-    req = urllib.request.Request(url, data, {'Content-Type': 'application/json'})
-    f = urllib.request.urlopen(req)
-    response = f.read()
-    f.close()
-    return response
-
-def pressed():
-    print('Pressed: {}'.format(trigger_url(ifttt_url_pressed)))
-
 rawSocket = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003))
+
+outputs = {
+    'IFTTT': ifttt.IFTTTOutput('YOUR MAKER API KEY HERE GET IT AT https://ifttt.com/maker')
+}
 
 while True:
     packet = rawSocket.recvfrom(2048)
@@ -90,34 +78,12 @@ while True:
     dest_ip = socket.inet_ntoa(arp_detailed[8])
     if source_mac in macs:
         #print "ARP from " + macs[source_mac] + " with IP " + source_ip
-        if macs[source_mac] == 'dash_dixie_goodnight_1':
-           if time.time() - oldtime > 15:
-              do_goodnight()
-              oldtime = time.time()
-           else:
-              print("Shorcut Triggered Once")
-              
-        if macs[source_mac] == 'arcade_on':
-           if time.time() - oldtime > 15:
-              arcade_on()
-              oldtime = time.time()
-           else:
-              print("Shortcut Triggered Once")
-
-        if macs[source_mac] == 'arcade_off':
-           if time.time() - oldtime > 15:
-              arcade_off()
-              oldtime = time.time()
-           else:
-              print("Shortcut Triggered Once")
-              
-        if macs[source_mac] == 'pressed':
-           if time.time() - oldtime > 15:
-              pressed()
-              oldtime = time.time()
-           else:
-              print("Shortcut Triggered Once")
-              
+        if time.time() - oldtime > 15:
+            (output, cmd) = macs[source_mac]
+            outputs[output].trigger(cmd)
+            oldtime = time.time()
+        else:
+            print("Shorcut Triggered Once")
     elif ethersource[0] in amazon_prefixes:
         print("Unknown dash button detected with MAC {}".format(source_mac))
 

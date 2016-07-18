@@ -86,7 +86,7 @@ while True:
     arp_detailed = struct.unpack("2s2s1s1s2s6s4s6s4s", arp_header)
     # skip non-ARP packets
     ethertype = ethernet_detailed[2]
-    if ethertype != '\x08\x06':
+    if ethertype != b'\x08\x06':
         continue
     source_mac = binascii.hexlify(arp_detailed[5])
     source_ip = socket.inet_ntoa(arp_detailed[6])
@@ -114,6 +114,6 @@ while True:
            else:
               print("Shortcut Triggered Once")
               
-    elif source_ip == '0.0.0.0':
+    elif source_ip == b'0.0.0.0':
         print("Unknown dash button detected with MAC " + source_mac)
 

@@ -44,15 +44,12 @@ amazon_prefixes = [
     b'\x44\x65\x0d',
 ]
 
-oldtime = time.time()
+oldtime = time.time() - 15
 print("Dash Command 1.0 Started")
 
 # Use your own IFTTT key, not this fake one
 ifttt_key = 'YOUR MAKER API KEY HERE GET IT AT https://ifttt.com/maker'
 # Set these up at https://ifttt.com/maker
-ifttt_url_goodnight_1 = 'https://maker.ifttt.com/trigger/goodnight_dash_1/with/key/' + ifttt_key
-ifttt_url_arcade_on = 'https://maker.ifttt.com/trigger/arcade_on/with/key/' + ifttt_key
-ifttt_url_arcade_off = 'https://maker.ifttt.com/trigger/arcade_off/with/key/' + ifttt_key
 ifttt_url_pressed = 'https://maker.ifttt.com/trigger/dash_pressed/with/key/' + ifttt_key
 
 # Replace these fake MAC addresses and nicknames with your own
@@ -71,15 +68,6 @@ def trigger_url(url):
     response = f.read()
     f.close()
     return response
-
-def do_goodnight():
-    print('Shortcut Goodnight Triggered: ' + trigger_url(ifttt_url_goodnight_1))
-
-def arcade_on():
-    print('Firing up the Arcade: ' + trigger_url(ifttt_url_arcade_on))
-
-def arcade_off():
-    print('Shutting down the Arcade: ' + trigger_url(ifttt_url_arcade_off))
 
 def pressed():
     print('Pressed: {}'.format(trigger_url(ifttt_url_pressed)))

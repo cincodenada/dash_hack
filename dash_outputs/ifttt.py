@@ -8,14 +8,12 @@ class IFTTTOutput:
     def __init__(self, config):
         self.key = config['api_key']
 
-    def trigger(self, cmd):
-        data = json.dumps({
-            "value1": time.strftime("%Y-%m-%d"),
-            "value2": time.strftime("%H:%M")
-        }).encode('ascii')
+    def trigger(self, cmd, custom = None):
+        data = dict(zip(['value1','value2','value3'], custom))
+        data_bytes = json.dumps(data).encode('ascii')
         url = self.url_template.format(name = cmd, key = self.key)
         print("Requesting {}".format(url))
-        req = urllib.request.Request(url, data, {'Content-Type': 'application/json'})
+        req = urllib.request.Request(url, data_bytes, {'Content-Type': 'application/json'})
         f = urllib.request.urlopen(req)
         response = f.read()
         f.close()

@@ -6,6 +6,8 @@ buttons:
     1234deadbeef:
         output: IFTTT
         action: dash_dixie_goodnight_1
+        data:
+            - 'Lullaby by OK Go'
     da1990decade:
         output: IFTTT
         action: arcade_on

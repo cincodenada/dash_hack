@@ -75,7 +75,12 @@ while True:
         #print "ARP from " + macs[source_mac] + " with IP " + source_ip
         cfg = config['buttons'][source_mac]
         if time.time() - oldtime > 15:
-            outputs[cfg['output']].trigger(cfg['action'])
+            if 'data' in cfg:
+                custom = cfg['data']
+            else:
+                custom = None
+
+            outputs[cfg['output']].trigger(cfg['action'], custom)
             oldtime = time.time()
         else:
             print("Shorcut Triggered Once")

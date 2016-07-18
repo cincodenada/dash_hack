@@ -40,6 +40,10 @@ sys.stderr = LogFile('stderr')
 
 # End Logging
 
+amazon_prefixes = [
+    b'\x44\x65\x0d',
+]
+
 oldtime = time.time()
 print("Dash Command 1.0 Started")
 
@@ -81,11 +85,12 @@ rawSocket = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003
 while True:
     packet = rawSocket.recvfrom(2048)
     ethernet_header = packet[0][0:14]
-    ethernet_detailed = struct.unpack("!6s6s2s", ethernet_header)
+    ethernet_detailed = struct.unpack("!6s3s3s2s", ethernet_header)
     arp_header = packet[0][14:42]
     arp_detailed = struct.unpack("2s2s1s1s2s6s4s6s4s", arp_header)
     # skip non-ARP packets
-    ethertype = ethernet_detailed[2]
+    ethertype = ethernet_detailed[3]
+    ethersource = ethernet_detailed[1:2]
     if ethertype != b'\x08\x06':
         continue
     source_mac = binascii.hexlify(arp_detailed[5])
@@ -114,6 +119,6 @@ while True:
            else:
               print("Shortcut Triggered Once")
               
-    elif source_ip == b'0.0.0.0':
-        print("Unknown dash button detected with MAC " + source_mac)
+    elif ethersource[0] in amazon_prefixes:
+        print("Unknown dash button detected with MAC {}".format(source_mac))
 

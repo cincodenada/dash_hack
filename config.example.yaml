@@ -1,0 +1,14 @@
+outputs:
+    IFTTT:
+        api_key: YOUR MAKER API KEY HERE GET IT AT https://ifttt.com/maker
+
+buttons:
+    1234deadbeef:
+        output: IFTTT
+        action: dash_dixie_goodnight_1
+    da1990decade:
+        output: IFTTT
+        action: arcade_on
+    adefacedcafe:
+        output: IFTTT
+        action: arcade_off

@@ -5,8 +5,8 @@ import urllib.request, urllib.error, urllib.parse
 class IFTTTOutput:
     url_template = 'https://maker.ifttt.com/trigger/{name}/with/key/{key}'
 
-    def __init__(self, key):
-        self.key = key
+    def __init__(self, config):
+        self.key = config['api_key']
 
     def trigger(self, cmd):
         data = json.dumps({

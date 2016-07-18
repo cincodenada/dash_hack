@@ -12,6 +12,7 @@ import struct
 import binascii
 import time
 import json
+import yaml
 import urllib.request, urllib.error, urllib.parse
 import time
 from dash_outputs import ifttt
@@ -45,21 +46,15 @@ amazon_prefixes = [
     b'\x44\x65\x0d',
 ]
 
+config = yaml.safe_load(open('config.yaml'))
+
 oldtime = time.time() - 15
 print("Dash Command 1.0 Started")
-
-# Replace these fake MAC addresses and nicknames with your own
-macs = {
-    b'465855866979' : ('IFTTT', 'dash_dixie_goodnight_1'),
-    b'235465768699' : ('IFTTT', 'arcade_on'),
-    b'346586986069' : ('IFTTT', 'arcade_off'),
-    b'1234deadbeef' : ('IFTTT', 'dash_pressed'),
-}
 
 rawSocket = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.htons(0x0003))
 
 outputs = {
-    'IFTTT': ifttt.IFTTTOutput('YOUR MAKER API KEY HERE GET IT AT https://ifttt.com/maker')
+    'IFTTT': ifttt.IFTTTOutput(config['outputs']['IFTTT'])
 }
 
 while True:
@@ -73,14 +68,14 @@ while True:
     ethersource = ethernet_detailed[1:2]
     if ethertype != b'\x08\x06':
         continue
-    source_mac = binascii.hexlify(arp_detailed[5])
+    source_mac = binascii.hexlify(arp_detailed[5]).decode('ascii')
     source_ip = socket.inet_ntoa(arp_detailed[6])
     dest_ip = socket.inet_ntoa(arp_detailed[8])
-    if source_mac in macs:
+    if source_mac in config['buttons']:
         #print "ARP from " + macs[source_mac] + " with IP " + source_ip
+        cfg = config['buttons'][source_mac]
         if time.time() - oldtime > 15:
-            (output, cmd) = macs[source_mac]
-            outputs[output].trigger(cmd)
+            outputs[cfg['output']].trigger(cfg['action'])
             oldtime = time.time()
         else:
             print("Shorcut Triggered Once")

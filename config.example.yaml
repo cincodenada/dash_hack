@@ -15,3 +15,8 @@ buttons:
     adefacedcafe:
         output: IFTTT
         action: arcade_off
+
+# If you don't see your buttons, try turning this on
+# It will show all devices asking for ID on the network,
+# whether they look Amazon-y or not
+show_all_devices: true

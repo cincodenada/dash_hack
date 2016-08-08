@@ -100,4 +100,5 @@ while True:
             print("Shorcut Triggered Once")
     elif ethersource[0] in amazon_prefixes:
         print("Unknown dash button detected with MAC {}".format(source_mac))
-
+    elif 'show_all_devices' in config and config['show_all_devices']:
+        print("Unknown ARP request detected from MAC {}".format(source_mac))

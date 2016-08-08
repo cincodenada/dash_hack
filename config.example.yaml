@@ -2,15 +2,16 @@ outputs:
     IFTTT:
         api_key: YOUR MAKER API KEY HERE GET IT AT https://ifttt.com/maker
 
+quick_buttons:
+    da1990decade: arcade_on
+
 buttons:
     1234deadbeef:
         output: IFTTT
         action: dash_dixie_goodnight_1
         data:
-            - 'Lullaby by OK Go'
-    da1990decade:
-        output: IFTTT
-        action: arcade_on
+            - 'Lullaby'
+            - 'OK Go'
     adefacedcafe:
         output: IFTTT
         action: arcade_off

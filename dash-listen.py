@@ -57,6 +57,20 @@ outputs = {
     'IFTTT': ifttt.IFTTTOutput(config['outputs']['IFTTT'])
 }
 
+try:
+    default_output = config['default_output']
+except KeyError:
+    default_output = 'IFTTT'
+    #default_output = config['outputs'].keys()
+
+buttons = config['buttons']
+if 'quick_buttons' in config:
+    for (mac, cmd) in config['quick_buttons']:
+        buttons[mac] = {
+            output: default_output,
+            action: cmd,
+        }
+
 while True:
     packet = rawSocket.recvfrom(2048)
     ethernet_header = packet[0][0:14]

@@ -41,5 +41,5 @@ That's it! Now when you press your button with the script running, it should fir
 I have the script running on a Raspberry Pi, but long as it's running on a computer connected to the same wifi as the button, it should pick it up.
 
 
-[1] https://medium.com/@edwardbenson/how-i-hacked-amazon-s-5-wifi-button-to-track-baby-data-794214b0bdd8#.9w4xdon1a
-[2] https://ifttt.com/recipes/451668-send-custom-dash-button-event-to-beeminder
+[1]: https://medium.com/@edwardbenson/how-i-hacked-amazon-s-5-wifi-button-to-track-baby-data-794214b0bdd8#.9w4xdon1a
+[2]: https://ifttt.com/recipes/451668-send-custom-dash-button-event-to-beeminder

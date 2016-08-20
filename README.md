@@ -27,8 +27,7 @@ How to use the thing
  
  In short: install the Amazon app on your phone and go to Menu->Your Account->Dash Devices->Set up a new device
 
-2. Get a Maker API key: go to https://ifttt.com/maker and follow the directions there to
-connect the Maker channel and get a key.  Take note of the key, you'll need it for the next step.
+2. Get a Maker API key: if you don't already have an IFTTT account, sign up for one.  Then go to https://ifttt.com/maker and follow the directions there to connect the Maker channel and get a key. Take note of the key, you'll need it for the next step.
 
 3. Set up the config for your Dash listener.  Copy `config.basic.yaml` as `config.yaml` and fill in your Maker API key
 where it says "YOUR MAKER API KEY HERE".  You'll fill in the other lines in a moment.
